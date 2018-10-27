@@ -1,21 +1,24 @@
 import os, random, struct
 from Crypto.Cipher import AES
+from Crypto import Random
+import sys
 
 class AESImplement:
 
-    def generateKey():
-    #16 byte key
-        AES_key = ''.join(chr(random.randint(0, 0xFF)) for i in range(16))
+    def generateKey(self):
+        key = ''.join(chr(random.randint(0, 100)) for i in range(16))
         fd = open("AES_key.pem", "wb")
-        fd.write(AES_key)
+        fd.write(bytes(str(key), 'utf-8'))
         fd.close()
-        return AES_key
+        return bytes(str(key), 'utf-8')
 
-    def encrypt_file(key, in_filename, out_filename=None, chunksize=64*1024):
+    #################################################################################################################
+    def encrypt_file(self,key, in_filename, out_filename=None, chunksize=64*1024):
         if not out_filename:
             out_filename = in_filename + '.enc'
 
-        iv = ''.join(chr(random.randint(0, 0xFF)) for i in range(16))
+        iv = Random.get_random_bytes(16)
+        print(type(key))
         encryptor = AES.new(key, AES.MODE_CBC, iv)
         filesize = os.path.getsize(in_filename)
 
@@ -33,7 +36,9 @@ class AESImplement:
 
                     outfile.write(encryptor.encrypt(chunk))
 
-    def decrypt_file(key, in_filename, out_filename=None, chunksize=24*1024):
+    #####################################################################################################
+
+    def decrypt_file(self,key, in_filename, out_filename=None, chunksize=24*1024):
 
         if not out_filename:
             out_filename = os.path.splitext(in_filename)[0]
@@ -52,4 +57,12 @@ class AESImplement:
 
                 outfile.truncate(origsize)
 
-key1 = generateKey()
+
+# aes = AESImplement()
+# aes.generateKey()
+# fd = open('AES_key.pem','rb')
+# key1 = fd.read()
+# aes.encrypt_file(key1, 'received_file', 'enc_file')
+# print("File encryption done")
+# aes.decrypt_file(key1, 'enc_file', 'dec_file',)
+# print("File decrypted")
