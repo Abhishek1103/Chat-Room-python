@@ -75,6 +75,25 @@ send_button.pack()
 file_dialog_button = tkinter.Button(top, text="Choose File", command=openFileDialog)
 file_dialog_button.pack()
 
+checkCmd = tkinter.IntVar()
+checkCmd.set(-1)
+
+
+def runSelectedItems():
+    if checkCmd.get() == 0:
+    	pass
+        #############task to do if aes is selected############################
+    elif checkCmd.get() == 1:
+    	pass
+    	#################task to do if des is selected########################
+    else:
+    	pass
+        
+
+
+checkBox1 = tkinter.Checkbutton(top, variable=checkCmd, onvalue=1, offvalue=0, text="AES encryption").pack()
+checkBox1 = tkinter.Checkbutton(top, variable=checkCmd, onvalue=0, offvalue=1, text="DES encryption",justify='right').pack()
+
 top.protocol("WM_DELETE_WINDOW", on_closing)
 
 #----Now comes the sockets part----
